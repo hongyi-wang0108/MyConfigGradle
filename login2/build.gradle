@@ -1,0 +1,58 @@
+if(isModule.toBoolean()){//1.
+    apply plugin: 'com.android.application'
+}else{
+    apply plugin: 'com.android.library'
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        if(isModule.toBoolean()){  //4.       //在android{}中
+            applicationId "com.example.login2"
+        }
+        minSdkVersion 28
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions{				//配置ARouter
+            annotationProcessorOptions{
+                includeCompileClasspath false
+                arguments = [AROUTER_MODULE_NAME:project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets{ //5.    //在android{}中
+        main{
+            if(isModule.toBoolean()){//组件化的话 用自动生成的
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }else{//集成的话 用自己写的 没有intentfilter那个
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(":Baselibs")
+    annotationProcessor rootProject.ext.annotationLibs		//注释处理器
+    //annotationProcessor rootProject.ext.arouterCompiler
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

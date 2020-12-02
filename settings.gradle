@@ -1,0 +1,10 @@
+include ':login2'
+include ':mine'
+include ':share'
+include ':login'
+include ':module_mine'
+include ':module_share'
+include ':module_login'
+include ':Baselibs'
+include ':app'
+rootProject.name = "MyConfigGradle"
